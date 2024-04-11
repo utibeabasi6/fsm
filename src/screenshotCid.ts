@@ -9,7 +9,12 @@ const defaultViewport = {
     height: 1080,
   } as const;
 
-export default async function screenshotCid(cid: string){
+export  type ScreenShotObj = {
+    key: string
+    buffer: Buffer
+  }
+
+export async function screenshotCid(cid: string) : Promise<ScreenShotObj> {
     const browser = await playwright.launch({
         args: chromium.args,
         executablePath: await chromium.executablePath(),
@@ -42,5 +47,10 @@ export default async function screenshotCid(cid: string){
     
       const key = nanoid.nanoid(20);
 
-      return key
+      const response: ScreenShotObj = {
+        buffer: screenshotBuffer,
+        key
+      }
+
+      return response
 }
